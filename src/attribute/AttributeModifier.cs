@@ -16,6 +16,15 @@ public partial class AttributeModifier(
     [Export] public AttributeModifierOperation Operation { get; private set; } = operation;
     [Export] public double Amount { get; private set; } = amount;
 
+    public static AttributeModifier CreateWithRandomId(
+        AttributeModifierOperation operation,
+        double amount,
+        out StringName id
+    ) {
+        id = "modifier_" + Guid.NewGuid().ToString().Replace('-', '_');
+        return Create(id, operation, amount);
+    }
+
     /// <summary>
     /// Constructor for GDScript :P
     /// </summary>
