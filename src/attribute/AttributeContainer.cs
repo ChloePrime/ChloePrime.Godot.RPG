@@ -1,4 +1,5 @@
 #nullable enable
+using System.Diagnostics.CodeAnalysis;
 using Godot;
 using Godot.Collections;
 
@@ -49,7 +50,29 @@ public partial class AttributeContainer : Node {
 }
 
 public static class AttributeContainerExt {
-    public static bool TryGetAttributeContainer(this Node node, out AttributeContainer? output) {
+    public static double GetAttributeValue(this Node node, Attribute attribute, double? fallback = null) {
+        if (node.TryGetAttributeContainer(out var container)) {
+            if (container.Data.TryGetValue(attribute, out var value)) {
+                return value;
+            }
+        }
+        return fallback ?? attribute.DefaultValue;
+    }
+
+    public static bool TryGetAttributeInstance(
+        this Node node, Attribute attribute,
+        [NotNullWhen(true)] out AttributeInstance? instance
+    ) {
+        if (node.TryGetAttributeContainer(out var container)) {
+            if (container.Data.TryGetInstance(attribute, out instance)) {
+                return true;
+            }
+        }
+        instance = null;
+        return false;
+    }
+
+    public static bool TryGetAttributeContainer(this Node node, [NotNullWhen(true)] out AttributeContainer? output) {
         var cached = node.GetMeta(AttributeContainer.MetadataKey, 0);
         if (cached.Obj is AttributeContainer containerInMeta) {
             output = containerInMeta;
