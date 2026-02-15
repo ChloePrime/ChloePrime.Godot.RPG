@@ -142,7 +142,6 @@ func _test_min_max_lock(
 	# Test stability of lock modifier
 	for i in range(1001):
 		test_lock_modifier.call(i - 500)
-	
 
 
 func _ready() -> void:
