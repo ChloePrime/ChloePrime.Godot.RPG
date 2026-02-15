@@ -1,0 +1,7 @@
+[gd_resource type="Resource" format=3 uid="uid://cr4yputsgv380"]
+
+[ext_resource type="Script" uid="uid://b718kbttput75" path="res://addons/ChloePrime.Godot.RPG/src/attribute/Attribute.cs" id="1_ht2r5"]
+
+[resource]
+script = ExtResource("1_ht2r5")
+Name = &"std:__test"

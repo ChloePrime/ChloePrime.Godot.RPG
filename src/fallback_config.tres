@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ChloePrimeRpgSystemConfig" format=3 uid="uid://ca2nbg1f77xir"]
+
+[ext_resource type="Script" uid="uid://b718kbttput75" path="res://addons/ChloePrime.Godot.RPG/src/attribute/Attribute.cs" id="1_vswvi"]
+[ext_resource type="Resource" uid="uid://b6ti0yi2u04dx" path="res://addons/ChloePrime.Godot.RPG/src/attribute/default_attribute_pipeline.tres" id="2_36e18"]
+[ext_resource type="Script" uid="uid://bmax0olvq2ajr" path="res://addons/ChloePrime.Godot.RPG/src/ChloePrimeRpgSystemConfig.cs" id="3_3ieus"]
+
+[resource]
+script = ExtResource("3_3ieus")
+GlobalAttributePipeline = ExtResource("2_36e18")

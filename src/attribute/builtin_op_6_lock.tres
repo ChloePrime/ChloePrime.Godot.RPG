@@ -1,0 +1,7 @@
+[gd_resource type="Resource" format=3 uid="uid://d1q53nr0qqhl0"]
+
+[ext_resource type="Script" uid="uid://bsrpb8ea45v2q" path="res://addons/ChloePrime.Godot.RPG/src/attribute/BuiltinAttributeModifierOperation.cs" id="1_eacxk"]
+
+[resource]
+script = ExtResource("1_eacxk")
+Type = 6

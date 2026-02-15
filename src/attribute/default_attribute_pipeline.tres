@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AttributePipeline" format=3 uid="uid://b6ti0yi2u04dx"]
+
+[ext_resource type="Resource" uid="uid://c8v8yrjvbymir" path="res://addons/ChloePrime.Godot.RPG/src/attribute/builtin_op_0_add_to_base.tres" id="1_kbbk2"]
+[ext_resource type="Script" uid="uid://dx4wemmhbjxe8" path="res://addons/ChloePrime.Godot.RPG/src/attribute/AttributePipeline.cs" id="1_q87fw"]
+[ext_resource type="Resource" uid="uid://decyffuy768l4" path="res://addons/ChloePrime.Godot.RPG/src/attribute/builtin_op_1_multiply_base.tres" id="2_mtwn0"]
+[ext_resource type="Resource" uid="uid://cxd6wafgm5tgd" path="res://addons/ChloePrime.Godot.RPG/src/attribute/builtin_op_2_multiply_total.tres" id="3_e7ehs"]
+[ext_resource type="Resource" uid="uid://c0ikm7cah2opd" path="res://addons/ChloePrime.Godot.RPG/src/attribute/builtin_op_3_add_to_total.tres" id="4_i7nqs"]
+[ext_resource type="Resource" uid="uid://tghsrpv77q52" path="res://addons/ChloePrime.Godot.RPG/src/attribute/builtin_op_4_min.tres" id="5_nke1p"]
+[ext_resource type="Resource" uid="uid://sc8emc8lvg0v" path="res://addons/ChloePrime.Godot.RPG/src/attribute/builtin_op_5_max.tres" id="6_5mk0f"]
+[ext_resource type="Resource" uid="uid://d1q53nr0qqhl0" path="res://addons/ChloePrime.Godot.RPG/src/attribute/builtin_op_6_lock.tres" id="7_o4hx7"]
+
+[resource]
+script = ExtResource("1_q87fw")
+OperationList = [ExtResource("1_kbbk2"), ExtResource("2_mtwn0"), ExtResource("3_e7ehs"), ExtResource("4_i7nqs"), ExtResource("5_nke1p"), ExtResource("6_5mk0f"), ExtResource("7_o4hx7")]
