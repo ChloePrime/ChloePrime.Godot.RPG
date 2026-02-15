@@ -66,6 +66,23 @@ public partial class AttributeInstance : RefCounted {
         }
     }
 
+    /// <summary>
+    /// Clear all modifiers from this attribute instance.
+    /// </summary>
+    public void ClearModifiers() {
+        Modifiers.Clear();
+        MergedCache.Clear();
+        _finalValue = BaseValue;
+    }
+
+    /// <summary>
+    /// Clear all modifiers of certain operation from this attribute instance.
+    /// </summary>
+    public void ClearModifiers(AttributeModifierOperation operation) {
+        Modifiers.Remove(operation);
+        MarkDirty(operation);
+    }
+
     #region Impl
     
     /// <summary>
