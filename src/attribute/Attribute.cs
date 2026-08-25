@@ -13,6 +13,6 @@ public partial class Attribute : Resource {
     public double ClampValue(double unclamped) {
         return Math.Clamp(unclamped, MinValue, MaxValue);
     }
-    
+
     private static readonly StringName EmptyName = "";
 }

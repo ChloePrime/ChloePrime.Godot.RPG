@@ -6,14 +6,14 @@ namespace ChloePrime.Godot.RPG;
 [GlobalClass]
 public partial class ChloePrimeRpgSystem : Node {
     public static ChloePrimeRpgSystemConfig Config => GetConfig();
-    
+
     private static ChloePrimeRpgSystemConfig GetConfig() {
         if (_globalCached is { } cached) {
             return cached;
         }
         var setting = ProjectSettings.GetSetting(ConfigPathPipelineSettingsName);
         if (setting.VariantType is Variant.Type.String) {
-            var resource = GD.Load(setting.AsString()); 
+            var resource = GD.Load(setting.AsString());
             if (resource is ChloePrimeRpgSystemConfig loaded) {
                 return _globalCached = loaded;
             } else {
@@ -22,7 +22,7 @@ public partial class ChloePrimeRpgSystem : Node {
         }
         return _globalCached = FallbackConfig;
     }
-    
+
     private const string ConfigPathPipelineSettingsName = "addons/chloe_prime_rpg/config_resource";
     private static ChloePrimeRpgSystemConfig? _globalCached;
 

@@ -39,7 +39,7 @@ public partial class AttributeModifier(
     public AttributeModifier Clone() {
         return new AttributeModifier(Name, Operation, Amount);
     }
-    
+
     object ICloneable.Clone() {
         return Clone();
     }

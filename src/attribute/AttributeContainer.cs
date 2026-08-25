@@ -7,7 +7,7 @@ namespace ChloePrime.Godot.RPG.Attribute;
 
 public partial class AttributeContainer : Node {
     [Export] public AttributePipeline? Pipeline { get; private set; }
-    
+
     /// <summary>
     /// Default values of this attribute table.
     /// This is only used in the node's on ready initialization.

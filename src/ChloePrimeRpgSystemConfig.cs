@@ -6,7 +6,6 @@ namespace ChloePrime.Godot.RPG;
 
 [GlobalClass]
 public partial class ChloePrimeRpgSystemConfig : Resource {
-    [ExportCategory("Attribute")]
-    [Export] public AttributePipeline GlobalAttributePipeline { get; private set; }
+    [ExportCategory("Attribute")] [Export] public AttributePipeline GlobalAttributePipeline { get; private set; }
     [Export] public Dictionary<Attribute.Attribute, double> DefaultAttributeValueOverride { get; private set; } = [];
 }

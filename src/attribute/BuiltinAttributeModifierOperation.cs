@@ -7,25 +7,25 @@ namespace ChloePrime.Godot.RPG.Attribute;
 
 public partial class BuiltinAttributeModifierOperation : AttributeModifierOperation {
     [Export] public OpType Type { get; private set; }
-    
+
     public enum OpType {
         AddToBase,
         MultiplyBase,
         MultiplyTotal,
         AddToTotal,
-        
+
         /// <summary>
         /// Minimum value limit for the attribute.
         /// Equivalent to calling Math.Max() on the previous value and the modifier value.
         /// </summary>
         Min,
-        
+
         /// <summary>
         /// Maximum value limit for the attribute.
         /// Equivalent to calling Math.Min() on the previous value and the modifier value.
         /// </summary>
         Max,
-        
+
         Lock,
     }
 
@@ -69,7 +69,8 @@ public partial class BuiltinAttributeModifierOperation : AttributeModifierOperat
 
     [DoesNotReturn]
     private T LogInvalidTypeExceptionAndReturn<T>(T fallback) {
-        GD.PushError($"Unknown {nameof(OpType)}: {Type}", new InvalidEnumArgumentException(nameof(Type), (int)Type, typeof(Enum)));
+        GD.PushError($"Unknown {nameof(OpType)}: {Type}",
+            new InvalidEnumArgumentException(nameof(Type), (int)Type, typeof(Enum)));
         return fallback;
     }
 }

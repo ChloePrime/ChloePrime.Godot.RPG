@@ -10,24 +10,24 @@ public partial class AttributeInstance : RefCounted {
     [Obsolete("Deserialization and GDScript only, don't call from C#.")]
     public AttributeInstance() {
     }
-    
+
     public AttributeInstance(AttributePipeline? pipeline, double baseValue) {
         Pipeline = pipeline;
         BaseValue = baseValue;
     }
-    
+
     public double BaseValue {
         get;
         set => SetBaseValue(out field, value);
     }
 
     public AttributePipeline? Pipeline { get; private set; }
-    
+
     /// <summary>
     /// This attribute instance's **unclamped** final value.
     /// </summary>
     public double Value => GetValue();
-    
+
     private Dictionary<AttributeModifierOperation, Dictionary<StringName, AttributeModifier>> Modifiers { get; set; } = [];
     private Dictionary<AttributeModifierOperation, double> MergedCache { get; set; } = [];
     private AttributePipeline ActualPipelineUsed => Pipeline ?? AttributePipeline.Global;
@@ -84,7 +84,7 @@ public partial class AttributeInstance : RefCounted {
     }
 
     #region Impl
-    
+
     /// <summary>
     /// Null if value is dirty.
     /// </summary>

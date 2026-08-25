@@ -11,7 +11,7 @@ public partial class AttributePipeline : Resource {
     public static AttributePipeline Global => ChloePrimeRpgSystem.Config.GlobalAttributePipeline;
 
     [Export] private AttributeModifierOperation[] OperationList { get; set; } = [];
-    
+
     /// <summary>
     /// Get operation count for this pipeline
     /// </summary>
@@ -34,7 +34,7 @@ public partial class AttributePipeline : Resource {
     /// C# only api for getting operation list
     /// </summary>
     public ReadOnlySpan<AttributeModifierOperation> Operations => OperationList;
-    
+
     private const string GlobalPipelineSettingsName = "addons/chloe_prime_rpg/global_attribute_pipeline";
     private static AttributePipeline _globalCached;
 
@@ -48,7 +48,7 @@ public partial class AttributePipeline : Resource {
         }
         return _globalCached = Fallback;
     }
-    
+
     /// <summary>
     /// res://addons/ChloePrime.Godot.RPG/attribute/default_attribute_pipeline.tres
     /// Use <see cref="Global"/> to get a global instance.

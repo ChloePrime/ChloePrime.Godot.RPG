@@ -8,7 +8,7 @@ namespace ChloePrime.Godot.RPG;
 public partial class Result : RefCounted {
     public bool Success { get; private init; }
     public Variant Value { get; private init; }
-    
+
     /// <summary>
     /// FP type of bool TryGetXXX(K key, out V value)
     /// </summary>

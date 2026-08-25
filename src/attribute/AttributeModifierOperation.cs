@@ -4,7 +4,7 @@ namespace ChloePrime.Godot.RPG.Attribute;
 
 public abstract partial class AttributeModifierOperation : Resource {
     public abstract double UnitValue { get; }
-    
+
     public double Apply(double baseValue, double amount) {
         return _Apply(baseValue, amount);
     }
