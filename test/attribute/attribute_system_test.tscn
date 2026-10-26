@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dj0erumcvsskg"]
 
 [ext_resource type="Script" uid="uid://c38uxf56nwbme" path="res://addons/ChloePrime.Godot.RPG/test/attribute/attribute_system_test.gd" id="1_r87pu"]
-[ext_resource type="Script" uid="uid://bxn7rtli7cbaw" path="res://addons/ChloePrime.Godot.RPG/src/attribute/AttributeContainer.cs" id="2_13fvp"]
-[ext_resource type="Script" uid="uid://b718kbttput75" path="res://addons/ChloePrime.Godot.RPG/src/attribute/Attribute.cs" id="3_iq36c"]
+[ext_resource type="Script" uid="uid://bxn7rtli7cbaw" path="res://addons/ChloePrime.Godot.RPG/src/attribute/CpRpgAttributeContainer.cs" id="2_13fvp"]
+[ext_resource type="Script" uid="uid://b718kbttput75" path="res://addons/ChloePrime.Godot.RPG/src/attribute/CpRpgAttribute.cs" id="3_iq36c"]
 [ext_resource type="Resource" uid="uid://cr4yputsgv380" path="res://addons/ChloePrime.Godot.RPG/test/attribute/test_attribute.tres" id="4_2rhdr"]
 
 [node name="Control" type="Control" unique_id=752791225]

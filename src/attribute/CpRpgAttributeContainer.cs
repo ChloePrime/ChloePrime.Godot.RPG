@@ -5,17 +5,18 @@ using Godot.Collections;
 
 namespace ChloePrime.Godot.RPG.Attribute;
 
-public partial class AttributeContainer : Node {
-    [Export] public AttributePipeline? Pipeline { get; private set; }
+[GlobalClass]
+public partial class CpRpgAttributeContainer : Node {
+    [Export] public CpRpgAttributePipeline? Pipeline { get; private set; }
 
     /// <summary>
     /// Default values of this attribute table.
     /// This is only used in the node's on ready initialization.
     /// </summary>
-    [Export] private Dictionary<Attribute, double> BaseValues { get; set; } = [];
+    [Export] private Dictionary<CpRpgAttribute, double> BaseValues { get; set; } = [];
 
-    public AttributeTable Data {
-        get => field ??= new AttributeTable(Pipeline);
+    public CpRpgAttributeTable Data {
+        get => field ??= new CpRpgAttributeTable(Pipeline);
         private set;
     }
 
@@ -33,7 +34,7 @@ public partial class AttributeContainer : Node {
         base._EnterTree();
         if (GetParent() is { } parent) {
             if (parent.HasMeta(MetadataKey)) {
-                GD.PrintErr($"Multiple {nameof(AttributeContainer)} children under same node! this is not allowed!");
+                GD.PrintErr($"Multiple {nameof(CpRpgAttributeContainer)} children under same node! this is not allowed!");
                 QueueFree();
             } else {
                 parent.SetMeta(MetadataKey, this);
@@ -50,7 +51,7 @@ public partial class AttributeContainer : Node {
 }
 
 public static class AttributeContainerExt {
-    public static double GetAttributeValue(this Node node, Attribute attribute, double? fallback = null) {
+    public static double GetAttributeValue(this Node node, CpRpgAttribute attribute, double? fallback = null) {
         if (node.TryGetAttributeContainer(out var container)) {
             if (container.Data.TryGetValue(attribute, out var value)) {
                 return value;
@@ -60,8 +61,8 @@ public static class AttributeContainerExt {
     }
 
     public static bool TryGetAttributeInstance(
-        this Node node, Attribute attribute,
-        [NotNullWhen(true)] out AttributeInstance? instance
+        this Node node, CpRpgAttribute attribute,
+        [NotNullWhen(true)] out CpRpgAttributeInstance? instance
     ) {
         if (node.TryGetAttributeContainer(out var container)) {
             if (container.Data.TryGetInstance(attribute, out instance)) {
@@ -72,15 +73,15 @@ public static class AttributeContainerExt {
         return false;
     }
 
-    public static bool TryGetAttributeContainer(this Node node, [NotNullWhen(true)] out AttributeContainer? output) {
-        var cached = node.GetMeta(AttributeContainer.MetadataKey, 0);
-        if (cached.Obj is AttributeContainer containerInMeta) {
+    public static bool TryGetAttributeContainer(this Node node, [NotNullWhen(true)] out CpRpgAttributeContainer? output) {
+        var cached = node.GetMeta(CpRpgAttributeContainer.MetadataKey, 0);
+        if (cached.Obj is CpRpgAttributeContainer containerInMeta) {
             output = containerInMeta;
             return true;
         }
         var childCount = node.GetChildCount();
         for (int i = 0; i < childCount; i++) {
-            if (node.GetChild(i) is AttributeContainer containerChild) {
+            if (node.GetChild(i) is CpRpgAttributeContainer containerChild) {
                 output = containerChild;
                 return true;
             }

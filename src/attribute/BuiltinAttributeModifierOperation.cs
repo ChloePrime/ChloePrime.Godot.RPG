@@ -5,7 +5,7 @@ using Godot;
 
 namespace ChloePrime.Godot.RPG.Attribute;
 
-public partial class BuiltinAttributeModifierOperation : AttributeModifierOperation {
+public partial class BuiltinAttributeModifierOperation : CpRpgAttributeModifierOperation {
     [Export] public OpType Type { get; private set; }
 
     public enum OpType {

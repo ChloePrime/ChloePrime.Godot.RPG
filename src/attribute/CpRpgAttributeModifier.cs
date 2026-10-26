@@ -3,21 +3,22 @@ using Godot;
 
 namespace ChloePrime.Godot.RPG.Attribute;
 
-public partial class AttributeModifier(
+[GlobalClass]
+public partial class CpRpgAttributeModifier(
     StringName name,
-    AttributeModifierOperation operation,
+    CpRpgAttributeModifierOperation operation,
     double amount
 ) : Resource, ICloneable {
     [Obsolete("Deserialization and GDScript only, don't call from C#.")]
-    public AttributeModifier() : this(null, null, 0) {
+    public CpRpgAttributeModifier() : this(null, null, 0) {
     }
 
     [Export] public StringName Name { get; private set; } = name;
-    [Export] public AttributeModifierOperation Operation { get; private set; } = operation;
+    [Export] public CpRpgAttributeModifierOperation Operation { get; private set; } = operation;
     [Export] public double Amount { get; private set; } = amount;
 
-    public static AttributeModifier CreateWithRandomId(
-        AttributeModifierOperation operation,
+    public static CpRpgAttributeModifier CreateWithRandomId(
+        CpRpgAttributeModifierOperation operation,
         double amount,
         out StringName id
     ) {
@@ -28,16 +29,16 @@ public partial class AttributeModifier(
     /// <summary>
     /// Constructor for GDScript :P
     /// </summary>
-    public static AttributeModifier Create(
+    public static CpRpgAttributeModifier Create(
         StringName name,
-        AttributeModifierOperation operation,
+        CpRpgAttributeModifierOperation operation,
         double amount
     ) {
-        return new AttributeModifier(name, operation, amount);
+        return new CpRpgAttributeModifier(name, operation, amount);
     }
 
-    public AttributeModifier Clone() {
-        return new AttributeModifier(Name, Operation, Amount);
+    public CpRpgAttributeModifier Clone() {
+        return new CpRpgAttributeModifier(Name, Operation, Amount);
     }
 
     object ICloneable.Clone() {

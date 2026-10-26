@@ -6,12 +6,13 @@ using Godot.Collections;
 
 namespace ChloePrime.Godot.RPG.Attribute;
 
-public partial class AttributeInstance : RefCounted {
+[GlobalClass]
+public partial class CpRpgAttributeInstance : RefCounted {
     [Obsolete("Deserialization and GDScript only, don't call from C#.")]
-    public AttributeInstance() {
+    public CpRpgAttributeInstance() {
     }
 
-    public AttributeInstance(AttributePipeline? pipeline, double baseValue) {
+    public CpRpgAttributeInstance(CpRpgAttributePipeline? pipeline, double baseValue) {
         Pipeline = pipeline;
         BaseValue = baseValue;
     }
@@ -21,18 +22,18 @@ public partial class AttributeInstance : RefCounted {
         set => SetBaseValue(out field, value);
     }
 
-    public AttributePipeline? Pipeline { get; private set; }
+    public CpRpgAttributePipeline? Pipeline { get; private set; }
 
     /// <summary>
     /// This attribute instance's **unclamped** final value.
     /// </summary>
     public double Value => GetValue();
 
-    private Dictionary<AttributeModifierOperation, Dictionary<StringName, AttributeModifier>> Modifiers { get; set; } = [];
-    private Dictionary<AttributeModifierOperation, double> MergedCache { get; set; } = [];
-    private AttributePipeline ActualPipelineUsed => Pipeline ?? AttributePipeline.Global;
+    private Dictionary<CpRpgAttributeModifierOperation, Dictionary<StringName, CpRpgAttributeModifier>> Modifiers { get; set; } = [];
+    private Dictionary<CpRpgAttributeModifierOperation, double> MergedCache { get; set; } = [];
+    private CpRpgAttributePipeline ActualPipelineUsed => Pipeline ?? CpRpgAttributePipeline.Global;
 
-    public void AddModifier(AttributeModifier inModifier) {
+    public void AddModifier(CpRpgAttributeModifier inModifier) {
         var modifier = inModifier.Clone();
         var operation = modifier.Operation;
         var modifiers = Modifiers.TryGetValue(operation, out var existing)
@@ -57,7 +58,7 @@ public partial class AttributeInstance : RefCounted {
         }
     }
 
-    public void RemoveModifier(AttributeModifierOperation operation, StringName name) {
+    public void RemoveModifier(CpRpgAttributeModifierOperation operation, StringName name) {
         if (!Modifiers.TryGetValue(operation, out var modifiers)) {
             return;
         }
@@ -78,7 +79,7 @@ public partial class AttributeInstance : RefCounted {
     /// <summary>
     /// Clear all modifiers of certain operation from this attribute instance.
     /// </summary>
-    public void ClearModifiers(AttributeModifierOperation operation) {
+    public void ClearModifiers(CpRpgAttributeModifierOperation operation) {
         Modifiers.Remove(operation);
         MarkDirty(operation);
     }
@@ -115,7 +116,7 @@ public partial class AttributeInstance : RefCounted {
         return value;
     }
 
-    private void MarkDirty(AttributeModifierOperation operation) {
+    private void MarkDirty(CpRpgAttributeModifierOperation operation) {
         MergedCache.Remove(operation);
         _finalValue = null;
     }

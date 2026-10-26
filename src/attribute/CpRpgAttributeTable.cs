@@ -3,14 +3,16 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Godot;
 using Godot.Collections;
+using JetBrains.Annotations;
 
 namespace ChloePrime.Godot.RPG.Attribute;
 
-public partial class AttributeTable(
-    AttributePipeline? pipeline
+[GlobalClass]
+public partial class CpRpgAttributeTable(
+    CpRpgAttributePipeline? pipeline
 ) : RefCounted {
-    [Obsolete("Deserialization and GDScript only, don't call from C#.")]
-    public AttributeTable() : this(null) {
+    [UsedImplicitly, Obsolete("Deserialization and GDScript only, don't call from C#.")]
+    public CpRpgAttributeTable() : this(null) {
     }
 
     /// <summary>
@@ -19,7 +21,7 @@ public partial class AttributeTable(
     /// </summary>
     /// <param name="attribute">The attribute type.</param>
     /// <returns>The value of this attribute table owner's given attribute.</returns>
-    public double GetValue(Attribute attribute) {
+    public double GetValue(CpRpgAttribute attribute) {
         return Instances.TryGetValue(attribute, out var instance)
             ? attribute.ClampValue(instance.Value)
             : attribute.DefaultValue;
@@ -31,7 +33,7 @@ public partial class AttributeTable(
     /// </summary>
     /// <param name="attribute">The attribute type.</param>
     /// <param name="value">>The value of this attribute table owner's given attribute.</param>
-    public bool TryGetValue(Attribute attribute, out double value) {
+    public bool TryGetValue(CpRpgAttribute attribute, out double value) {
         if (Instances.TryGetValue(attribute, out var instance)) {
             value = attribute.ClampValue(instance.Value);
             return true;
@@ -42,9 +44,9 @@ public partial class AttributeTable(
     }
 
     /// <summary>
-    /// GDScript version of <see cref="TryGetValue(Attribute, out double)"/>
+    /// GDScript version of <see cref="TryGetValue(CpRpgAttribute, out double)"/>
     /// </summary>
-    public Result TryGetValue(Attribute attribute) {
+    public Result TryGetValue(CpRpgAttribute attribute) {
         return Result.From(TryGetValue, attribute, attribute.DefaultValue);
     }
 
@@ -54,7 +56,7 @@ public partial class AttributeTable(
     /// </summary>
     /// <param name="attribute">The attribute type.</param>
     /// <returns>The base value of this attribute table owner's given attribute.</returns>
-    public double GetBaseValue(Attribute attribute) {
+    public double GetBaseValue(CpRpgAttribute attribute) {
         return Instances.TryGetValue(attribute, out var instance)
             ? instance.BaseValue
             : attribute.DefaultValue;
@@ -66,7 +68,7 @@ public partial class AttributeTable(
     /// </summary>
     /// <param name="attribute">The attribute type.</param>
     /// <param name="value">>The base value of this attribute table owner's given attribute.</param>
-    public bool TryGetBaseValue(Attribute attribute, out double value) {
+    public bool TryGetBaseValue(CpRpgAttribute attribute, out double value) {
         if (Instances.TryGetValue(attribute, out var instance)) {
             value = instance.BaseValue;
             return true;
@@ -77,9 +79,9 @@ public partial class AttributeTable(
     }
 
     /// <summary>
-    /// GDScript version of <see cref="TryGetBaseValue(Attribute, out double)"/>
+    /// GDScript version of <see cref="TryGetBaseValue(CpRpgAttribute, out double)"/>
     /// </summary>
-    public Result TryGetBaseValue(Attribute attribute) {
+    public Result TryGetBaseValue(CpRpgAttribute attribute) {
         return Result.From(TryGetBaseValue, attribute, attribute.DefaultValue);
     }
 
@@ -89,15 +91,15 @@ public partial class AttributeTable(
     /// </summary>
     /// <param name="attribute">The attribute type.</param>
     /// <param name="value">The new base value of this attribute table owner's given attribute.</param>
-    public void SetBaseValue(Attribute attribute, double value) {
+    public void SetBaseValue(CpRpgAttribute attribute, double value) {
         if (Instances.TryGetValue(attribute, out var instance)) {
             instance.BaseValue = value;
         } else {
-            Instances[attribute] = new AttributeInstance(Pipeline, value);
+            Instances[attribute] = new CpRpgAttributeInstance(Pipeline, value);
         }
     }
 
-    public AttributeInstance? GetInstance(Attribute attribute) {
+    public CpRpgAttributeInstance? GetInstance(CpRpgAttribute attribute) {
         return TryGetInstance(attribute, out var instance) ? instance : null;
     }
 
@@ -108,17 +110,17 @@ public partial class AttributeTable(
     /// <param name="attribute">The attribute type.</param>
     /// <param name="instance">the attribute instance in this table.</param>
     /// <returns>If the given attribute instance exists.</returns>
-    public bool TryGetInstance(Attribute attribute, [NotNullWhen(true)] out AttributeInstance? instance) {
+    public bool TryGetInstance(CpRpgAttribute attribute, [NotNullWhen(true)] out CpRpgAttributeInstance? instance) {
         return Instances.TryGetValue(attribute, out instance);
     }
 
     /// <summary>
-    /// GDScript version of <see cref="TryGetInstance(Attribute, out AttributeInstance?)"/>
+    /// GDScript version of <see cref="TryGetInstance(CpRpgAttribute, out CpRpgAttributeInstance?)"/>
     /// </summary>
-    public Result TryGetInstance(Attribute attribute) {
-        return Result.From(TryGetInstance, attribute, null as AttributeInstance);
+    public Result TryGetInstance(CpRpgAttribute attribute) {
+        return Result.From(TryGetInstance, attribute, null as CpRpgAttributeInstance);
     }
 
-    private AttributePipeline? Pipeline { get; } = pipeline;
-    private Dictionary<Attribute, AttributeInstance> Instances { get; } = [];
+    private CpRpgAttributePipeline? Pipeline { get; } = pipeline;
+    private Dictionary<CpRpgAttribute, CpRpgAttributeInstance> Instances { get; } = [];
 }
