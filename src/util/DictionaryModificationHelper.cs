@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace ChloePrime.Godot.RPG.Util;
 
 public static class DictionaryModificationHelper {
-    public static void MapEachValue<K, V>(IDictionary<K, V> dict, Func<V, V> mapper) {
+    public static void MapEachValue<K, V>(IDictionary<K, V> dict, Func<K, V, V> mapper) {
         var arrayPool = ArrayPool<K>.Shared;
         int keyC = dict.Keys.Count;
         K[] keys = arrayPool.Rent(keyC);
@@ -17,10 +17,15 @@ public static class DictionaryModificationHelper {
                 i++;
             }
             for (i = 0; i < keyC; i++) {
-                dict[keys[i]] = mapper(dict[keys[i]]);
+                var key = keys[i];
+                dict[key] = mapper(key, dict[key]);
             }
         } finally {
             arrayPool.Return(keys);
         }
+    }
+
+    public static void MapEachValue<K, V>(IDictionary<K, V> dict, Func<V, V> mapper) {
+        MapEachValue(dict, (_, v) => mapper(v));
     }
 }

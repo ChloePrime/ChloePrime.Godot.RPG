@@ -121,10 +121,19 @@ public partial class CpRpgAttackEvent(
         DamageTable[damageType] = updater(DamageTable[damageType]);
     }
 
-    public double GetFinalDamage(CpRpgResistanceTable resistance) {
+    public static double ComputeValidTotalDamage(CpRpgDamageTableView damages) {
+        return damages.Values
+            .Where(v => v > 0)
+            .Sum();
+    }
+
+    public double GetFinalDamage(CpRpgResistanceTable? resistance) {
+        if (resistance is null) {
+            return ComputeValidTotalDamage(DamageTableView);
+        }
         return DamageTableView.Sum(kvp => {
             var (damageType, damageByType) = kvp;
-            return damageByType * resistance.GetCoefficientForDamageType(damageType);
+            return Math.Max(0, damageByType * resistance.GetCoefficientForDamageType(damageType));
         });
     }
 

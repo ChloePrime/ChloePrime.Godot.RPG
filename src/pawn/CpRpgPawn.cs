@@ -27,21 +27,41 @@ public partial class CpRpgPawn : Node, IRpgTraceable {
     [Signal]
     public delegate void AttackFailedEventHandler(CpRpgAttackEvent attack);
 
+    /// <summary>
+    /// 受伤过程中扣血之前触发。
+    /// 此处获取到的伤害是受抗性影响后的伤害。
+    /// </summary>
     [Signal]
     public delegate void PreHurtEventHandler(PreHurtEvent @event);
 
+    /// <summary>
+    /// 格挡伤害，将当次攻击的累计伤害降低到小于 0 时触发。
+    /// 此处获取到的伤害是受抗性影响后的伤害。
+    /// </summary>
     [Signal]
     public delegate void PreHurtBlockedEventHandler(PostHurtEvent @event);
 
+    /// <summary>
+    /// 受伤过程中扣血之后触发。
+    /// </summary>
     [Signal]
     public delegate void PostHurtEventHandler(PostHurtEvent @event);
 
+    /// <summary>
+    /// 死亡前触发
+    /// </summary>
     [Signal]
     public delegate void PreDeathEventHandler(PreHurtEvent @event);
 
+    /// <summary>
+    /// 死亡事件被阻挡时触发
+    /// </summary>
     [Signal]
     public delegate void PreDeathBlockedEventHandler(PostHurtEvent @event);
 
+    /// <summary>
+    /// 成功死亡后触发
+    /// </summary>
     [Signal]
     public delegate void PostDeathEventHandler(PostHurtEvent @event);
 
@@ -90,18 +110,36 @@ public partial class CpRpgPawn : Node, IRpgTraceable {
     /// <param name="attack">攻击事件</param>
     /// <returns>攻击结果</returns>
     public CpRpgAttackResult Hurt(CpRpgAttackEvent attack) {
+        // 计算抗性之前总伤害 < 0 的攻击视为无效攻击
+        if (CpRpgAttackEvent.ComputeValidTotalDamage(attack.DamageTableView) < 0) {
+            return new CpRpgAttackResult(false, attack);
+        }
+        // 计算抗性
+        if (ResistanceTable is { } resistances) {
+            DictionaryModificationHelper.MapEachValue(
+                attack.DamageTable,
+                (dmgType, amount) => amount * resistances.GetCoefficientForDamageType(dmgType));
+        }
+        // 计算格挡 / 无敌（PreHurt）
         var preEvent = new PreHurtEvent(attack);
         var postEvent = new PostHurtEvent(attack);
-        // 计算格挡 / 无敌
         EmitSignalPreHurt(preEvent);
+        if (preEvent.Success && CpRpgAttackEvent.ComputeValidTotalDamage(attack.DamageTableView) < 0) {
+            preEvent.Fail();
+        }
         if (preEvent.Fails) {
             EmitSignalPreHurtBlocked(postEvent);
             return new CpRpgAttackResult(false, attack);
         }
-        // 扣血
-        var damage = preEvent.DamageTableView.Values.Sum();
+        // 造成伤害
+        var damage = CpRpgAttackEvent.ComputeValidTotalDamage(preEvent.DamageTableView);
+        if (damage <= 0) {
+            EmitSignalPreHurtBlocked(postEvent);
+            return new CpRpgAttackResult(false, attack);
+        }
         var hp = HitPoint -= damage;
         EmitSignalPostHurt(postEvent);
+        // 如果扣血了但是没被杀死则直接返回成功
         if (hp > 0) {
             return new CpRpgAttackResult(true, attack);
         }

@@ -12,7 +12,8 @@ public partial class CpRpgResistanceTable : Resource {
     /// 伤害系数表。小于 1 为抵抗，大于 1 为被克制。
     /// 如不填写则默认值为 1。
     /// </summary>
-    [Export] private Dictionary<CpRpgDamageElementType, double> Coefficients { get; set; } = [];
+    [Export]
+    private Dictionary<CpRpgDamageElementType, double> Coefficients { get; set; } = [];
 
     /// <summary>
     /// 默认属性倍率，当然是 1 啦
@@ -20,7 +21,7 @@ public partial class CpRpgResistanceTable : Resource {
     public const double DefaultCoefficient = 1;
 
     public double GetCoefficientForElement(CpRpgDamageElementType element) {
-        return Coefficients?.GetValueOrDefault(element, DefaultCoefficient) ?? DefaultCoefficient;
+        return Coefficients.GetValueOrDefault(element, DefaultCoefficient);
     }
 
     public double GetCoefficientForDamageType(CpRpgDamageType damageType) {
