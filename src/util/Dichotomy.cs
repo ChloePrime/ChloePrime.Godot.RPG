@@ -1,4 +1,5 @@
-namespace ChloePrime.Godot.RPG;
+#nullable enable
+namespace ChloePrime.Godot.RPG.Util;
 
 public enum Dichotomy {
     /// <summary>

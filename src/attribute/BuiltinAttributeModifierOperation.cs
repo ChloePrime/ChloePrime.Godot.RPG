@@ -1,6 +1,6 @@
+#nullable enable
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Godot;
 
 namespace ChloePrime.Godot.RPG.Attribute;
@@ -67,10 +67,8 @@ public partial class BuiltinAttributeModifierOperation : CpRpgAttributeModifierO
         };
     }
 
-    [DoesNotReturn]
     private T LogInvalidTypeExceptionAndReturn<T>(T fallback) {
-        GD.PushError($"Unknown {nameof(OpType)}: {Type}",
-            new InvalidEnumArgumentException(nameof(Type), (int)Type, typeof(Enum)));
+        GD.PushError($"Unknown {nameof(OpType)}: {Type}", new InvalidEnumArgumentException(nameof(Type), (int)Type, typeof(Enum)));
         return fallback;
     }
 }

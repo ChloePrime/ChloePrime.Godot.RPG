@@ -1,6 +1,7 @@
+#nullable enable
 using Godot;
 
-namespace ChloePrime.Godot.RPG;
+namespace ChloePrime.Godot.RPG.Util;
 
 /// <summary>
 /// GDScript wrapper of TryGetXXX(key, out value) methods' result.

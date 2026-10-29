@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CpRpgAttribute" format=3 uid="uid://c1s8cmvms167k"]
+
+[ext_resource type="Script" uid="uid://b718kbttput75" path="res://addons/ChloePrime.Godot.RPG/src/attribute/CpRpgAttribute.cs" id="1_pggym"]
+
+[resource]
+script = ExtResource("1_pggym")
+Name = &"max_hp"
+DefaultValue = 1.0
+MinValue = 0.0
+metadata/_custom_type_script = "uid://b718kbttput75"

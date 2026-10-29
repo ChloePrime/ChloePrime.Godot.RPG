@@ -1,3 +1,4 @@
+#nullable enable
 using Godot;
 
 namespace ChloePrime.Godot.RPG.Attribute;
@@ -23,13 +24,13 @@ public partial class CpRpgBuiltinAttributeModifierOperations : Node {
 
     public static CpRpgAttributeModifierOperation Lock() => _lock ??= Load("uid://d1q53nr0qqhl0");
 
-    private static CpRpgAttributeModifierOperation _addToBase;
-    private static CpRpgAttributeModifierOperation _multiplyBase;
-    private static CpRpgAttributeModifierOperation _multiplyTotal;
-    private static CpRpgAttributeModifierOperation _addToTotal;
-    private static CpRpgAttributeModifierOperation _min;
-    private static CpRpgAttributeModifierOperation _max;
-    private static CpRpgAttributeModifierOperation _lock;
+    private static CpRpgAttributeModifierOperation? _addToBase;
+    private static CpRpgAttributeModifierOperation? _multiplyBase;
+    private static CpRpgAttributeModifierOperation? _multiplyTotal;
+    private static CpRpgAttributeModifierOperation? _addToTotal;
+    private static CpRpgAttributeModifierOperation? _min;
+    private static CpRpgAttributeModifierOperation? _max;
+    private static CpRpgAttributeModifierOperation? _lock;
 
     private static CpRpgAttributeModifierOperation Load(string path) {
         return GD.Load<CpRpgAttributeModifierOperation>(path);

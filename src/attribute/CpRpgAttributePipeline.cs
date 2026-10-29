@@ -8,9 +8,13 @@ namespace ChloePrime.Godot.RPG.Attribute;
 /// </summary>
 [GlobalClass]
 public partial class CpRpgAttributePipeline : Resource {
-    public static CpRpgAttributePipeline Global => ChloePrimeRpgSystem.Config.GlobalAttributePipeline;
+    public static CpRpgAttributePipeline Global => ChloePrimeRpgSystem.Config.GlobalAttributePipeline ?? Fallback;
 
-    [Export] private CpRpgAttributeModifierOperation[] OperationList { get; set; } = [];
+    /// <summary>
+    /// Used operations and their process order.
+    /// </summary>
+    [Export]
+    private CpRpgAttributeModifierOperation[] OperationList { get; set; } = [];
 
     /// <summary>
     /// Get operation count for this pipeline
@@ -34,20 +38,6 @@ public partial class CpRpgAttributePipeline : Resource {
     /// C# only api for getting operation list
     /// </summary>
     public ReadOnlySpan<CpRpgAttributeModifierOperation> Operations => OperationList;
-
-    private const string GlobalPipelineSettingsName = "addons/chloe_prime_rpg/global_attribute_pipeline";
-    private static CpRpgAttributePipeline _globalCached;
-
-    private static CpRpgAttributePipeline GetGlobal() {
-        if (_globalCached is { } cached) {
-            return cached;
-        }
-        var setting = ProjectSettings.GetSetting(GlobalPipelineSettingsName);
-        if (setting.VariantType is Variant.Type.String) {
-            return _globalCached = GD.Load(setting.AsString()) as CpRpgAttributePipeline;
-        }
-        return _globalCached = Fallback;
-    }
 
     /// <summary>
     /// res://addons/ChloePrime.Godot.RPG/attribute/default_attribute_pipeline.tres

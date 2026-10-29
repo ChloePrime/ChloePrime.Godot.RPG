@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Diagnostics.CodeAnalysis;
+using ChloePrime.Godot.RPG.Util;
 using Godot;
 using Godot.Collections;
 using JetBrains.Annotations;

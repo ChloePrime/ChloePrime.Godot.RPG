@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Godot;
 
@@ -10,7 +11,7 @@ public partial class CpRpgAttributeModifier(
     double amount
 ) : Resource, ICloneable {
     [Obsolete("Deserialization and GDScript only, don't call from C#.")]
-    public CpRpgAttributeModifier() : this(null, null, 0) {
+    public CpRpgAttributeModifier() : this(null!, null!, 0) {
     }
 
     [Export] public StringName Name { get; private set; } = name;

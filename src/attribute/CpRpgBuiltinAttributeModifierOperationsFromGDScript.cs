@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using Godot;
 
@@ -14,7 +15,7 @@ public partial class CpRpgBuiltinAttributeModifierOperationsFromGdScript : CpRpg
     /// 实现逻辑的 GDS 脚本
     /// </summary>
     [Export]
-    public GDScript Script { get; private set; }
+    public GDScript? Script { get; private set; }
 
     public override double UnitValue => _defaultValue ??= GetInstance().Call("_get_unit_value").AsDouble();
 
@@ -26,7 +27,7 @@ public partial class CpRpgBuiltinAttributeModifierOperationsFromGdScript : CpRpg
         return GetInstance().Call("_merge", lhs, rhs).AsDouble();
     }
 
-    private GodotObject _instance;
+    private GodotObject? _instance;
     private double? _defaultValue;
 
     private GodotObject GetInstance() {

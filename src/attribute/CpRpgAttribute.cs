@@ -1,4 +1,6 @@
+#nullable enable
 using System;
+using ChloePrime.Godot.RPG.Util;
 using Godot;
 
 namespace ChloePrime.Godot.RPG.Attribute;
