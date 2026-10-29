@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CpRpgBattleResource" format=3 uid="uid://belylcjn54qnh"]
+[gd_resource type="Resource" script_class="CpRpgBattleResourceType" format=3 uid="uid://belylcjn54qnh"]
 
 [ext_resource type="Script" uid="uid://qc8mst3re6wv" path="res://addons/ChloePrime.Godot.RPG/src/battle_resource/CpRpgBattleResourceType.cs" id="1_wai20"]
 

@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dj8pi8qtnwqe1"]
+
+[ext_resource type="Script" uid="uid://dtxntedx0p2wa" path="res://addons/ChloePrime.Godot.RPG/src/pawn/CpRpgPawn.cs" id="1_ca5y3"]
+[ext_resource type="Script" uid="uid://bxn7rtli7cbaw" path="res://addons/ChloePrime.Godot.RPG/src/attribute/CpRpgAttributeContainer.cs" id="2_niccb"]
+[ext_resource type="Script" uid="uid://dy1gxjpdhcydq" path="res://addons/ChloePrime.Godot.RPG/src/battle_resource/CpRpgBattleResourceContainer.cs" id="3_0cxs7"]
+[ext_resource type="Script" uid="uid://b718kbttput75" path="res://addons/ChloePrime.Godot.RPG/src/attribute/CpRpgAttribute.cs" id="3_jhxbf"]
+[ext_resource type="Resource" uid="uid://c1s8cmvms167k" path="res://addons/ChloePrime.Godot.RPG/src/attribute/max_hit_point.tres" id="4_a53wf"]
+[ext_resource type="Script" uid="uid://qc8mst3re6wv" path="res://addons/ChloePrime.Godot.RPG/src/battle_resource/CpRpgBattleResourceType.cs" id="6_ujx12"]
+[ext_resource type="Resource" uid="uid://belylcjn54qnh" path="res://addons/ChloePrime.Godot.RPG/src/battle_resource/hit_point.tres" id="7_lcx4h"]
+
+[node name="Standard Pawn" type="Node" unique_id=742473520 node_paths=PackedStringArray("AttributeContainer", "ResourceContainer")]
+script = ExtResource("1_ca5y3")
+AttributeContainer = NodePath("Attributes")
+ResourceContainer = NodePath("Battle Resources")
+metadata/_custom_type_script = "uid://dtxntedx0p2wa"
+
+[node name="Attributes" type="Node" parent="." unique_id=1547910194]
+script = ExtResource("2_niccb")
+BaseValues = Dictionary[ExtResource("3_jhxbf"), float]({
+ExtResource("4_a53wf"): 1.0
+})
+metadata/_custom_type_script = "uid://bxn7rtli7cbaw"
+
+[node name="Battle Resources" type="Node" parent="." unique_id=1898420893]
+script = ExtResource("3_0cxs7")
+ResourceTable = Dictionary[ExtResource("6_ujx12"), float]({
+ExtResource("7_lcx4h"): 1.0
+})
+metadata/_custom_type_script = "uid://dy1gxjpdhcydq"
