@@ -25,7 +25,7 @@ public partial class CpRpgAttributeTable(
     public double GetValue(CpRpgAttribute attribute) {
         return Instances.TryGetValue(attribute, out var instance)
             ? attribute.ClampValue(instance.Value)
-            : attribute.DefaultValue;
+            : attribute.GetDefaultValue();
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public partial class CpRpgAttributeTable(
             value = attribute.ClampValue(instance.Value);
             return true;
         } else {
-            value = attribute.DefaultValue;
+            value = attribute.GetDefaultValue();
             return false;
         }
     }
@@ -48,7 +48,7 @@ public partial class CpRpgAttributeTable(
     /// GDScript version of <see cref="TryGetValue(CpRpgAttribute, out double)"/>
     /// </summary>
     public Result TryGetValue(CpRpgAttribute attribute) {
-        return Result.From(TryGetValue, attribute, attribute.DefaultValue);
+        return Result.From(TryGetValue, attribute, attribute.GetDefaultValue());
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public partial class CpRpgAttributeTable(
     public double GetBaseValue(CpRpgAttribute attribute) {
         return Instances.TryGetValue(attribute, out var instance)
             ? instance.BaseValue
-            : attribute.DefaultValue;
+            : attribute.GetDefaultValue();
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public partial class CpRpgAttributeTable(
             value = instance.BaseValue;
             return true;
         } else {
-            value = attribute.DefaultValue;
+            value = attribute.GetDefaultValue();
             return false;
         }
     }
@@ -83,7 +83,7 @@ public partial class CpRpgAttributeTable(
     /// GDScript version of <see cref="TryGetBaseValue(CpRpgAttribute, out double)"/>
     /// </summary>
     public Result TryGetBaseValue(CpRpgAttribute attribute) {
-        return Result.From(TryGetBaseValue, attribute, attribute.DefaultValue);
+        return Result.From(TryGetBaseValue, attribute, attribute.GetDefaultValue());
     }
 
     /// <summary>

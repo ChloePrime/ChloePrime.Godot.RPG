@@ -66,14 +66,6 @@ public partial class CpRpgPawn : Node, IRpgTraceable {
     public delegate void PostDeathEventHandler(PostHurtEvent @event);
 
     /// <summary>
-    /// 该单位的 HP。
-    /// </summary>
-    public double HitPoint {
-        get => ResourceContainer[CpRpgImportantBattleResources.HitPoint()];
-        set => ResourceContainer[CpRpgImportantBattleResources.HitPoint()] = value;
-    }
-
-    /// <summary>
     /// 使用指定的技能和直接伤害来源发动攻击。
     /// 会通过设定的伤害公式将威力转化为伤害。
     /// </summary>
@@ -137,7 +129,7 @@ public partial class CpRpgPawn : Node, IRpgTraceable {
             EmitSignalPreHurtBlocked(postEvent);
             return new CpRpgAttackResult(false, attack);
         }
-        var hp = HitPoint -= damage;
+        var hp = this.HitPoint -= damage;
         EmitSignalPostHurt(postEvent);
         // 如果扣血了但是没被杀死则直接返回成功
         if (hp > 0) {
@@ -152,7 +144,7 @@ public partial class CpRpgPawn : Node, IRpgTraceable {
     /// <param name="attack">攻击事件</param>
     /// <returns>攻击结果</returns>
     public CpRpgAttackResult Kill(CpRpgAttackEvent attack) {
-        HitPoint = Math.Min(HitPoint, 0);
+        this.HitPoint = Math.Min(this.HitPoint, 0);
         return KillImpl(attack, new PreHurtEvent(attack), new PostHurtEvent(attack), false);
     }
 
@@ -238,4 +230,59 @@ public partial class CpRpgPawn : Node, IRpgTraceable {
 
     IRpgTraceable IRpgTraceable.RpgOwner => this;
     GodotObject IRpgTraceable.AsEngineObject() => this;
+}
+
+public static class PawnExt {
+    /// <summary>
+    /// Pawn 的 Attribute 的索引器
+    /// </summary>
+    /// <seealso cref="PawnExt.get_Attributes"/>
+    public readonly record struct AttributesAccessor(CpRpgPawn Model) {
+        public double this[CpRpgAttribute attribute] => Model.GetAttributeValue(attribute);
+    }
+
+    /// <summary>
+    /// Pawn 的 BattleResources 的索引器
+    /// </summary>
+    /// <seealso cref="PawnExt.get_BattleResources"/>
+    public readonly record struct BattleResourceAccessor(CpRpgPawn Model) {
+        public double this[CpRpgBattleResourceType resourceType] {
+            get => Model.GetBattleResource(resourceType);
+            set => Model.SetBattleResource(resourceType, value);
+        }
+    }
+
+    extension(CpRpgPawn pawn) {
+        public AttributesAccessor Attributes => new(pawn);
+
+        public BattleResourceAccessor BattleResources => new(pawn);
+
+        /// <summary>
+        /// 该单位的 HP。
+        /// </summary>
+        public double HitPoint {
+            get => pawn.ResourceContainer[CpRpgImportantBattleResources.HitPoint()];
+            set => pawn.ResourceContainer[CpRpgImportantBattleResources.HitPoint()] = value;
+        }
+
+        public double GetAttributeBaseValue(CpRpgAttribute attribute) {
+            return pawn.AttributeContainer.Data.TryGetBaseValue(attribute, out var value) ? value : attribute.GetDefaultValue();
+        }
+
+        public double GetAttributeValue(CpRpgAttribute attribute) {
+            return pawn.GetAttributeValue(attribute, attribute.GetDefaultValue());
+        }
+
+        public double GetAttributeValue(CpRpgAttribute attribute, double fallback) {
+            return pawn.AttributeContainer.Data.TryGetValue(attribute, out var value) ? value : fallback;
+        }
+
+        public double GetBattleResource(CpRpgBattleResourceType resourceType) {
+            return pawn.ResourceContainer.TryGetValue(resourceType, out var value) ? value : 0;
+        }
+
+        public void SetBattleResource(CpRpgBattleResourceType resourceType, double value) {
+            pawn.ResourceContainer[resourceType] = value;
+        }
+    }
 }

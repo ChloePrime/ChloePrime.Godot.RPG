@@ -51,15 +51,6 @@ public partial class CpRpgAttributeContainer : Node {
 }
 
 public static class AttributeContainerExt {
-    public static double GetAttributeValue(this Node node, CpRpgAttribute attribute, double? fallback = null) {
-        if (node.TryGetAttributeContainer(out var container)) {
-            if (container.Data.TryGetValue(attribute, out var value)) {
-                return value;
-            }
-        }
-        return fallback ?? attribute.DefaultValue;
-    }
-
     public static bool TryGetAttributeInstance(
         this Node node, CpRpgAttribute attribute,
         [NotNullWhen(true)] out CpRpgAttributeInstance? instance
