@@ -3,12 +3,13 @@ using System;
 using System.Linq;
 using Godot;
 using Godot.Collections;
+using JetBrains.Annotations;
 
 namespace ChloePrime.Godot.RPG.Attribute;
 
 [GlobalClass]
 public partial class CpRpgAttributeInstance : RefCounted {
-    [Obsolete("Deserialization and GDScript only, don't call from C#.")]
+    [UsedImplicitly, Obsolete("Deserialization and GDScript only, don't call from C#.")]
     public CpRpgAttributeInstance() {
     }
 
@@ -19,7 +20,7 @@ public partial class CpRpgAttributeInstance : RefCounted {
 
     public double BaseValue {
         get;
-        set => SetBaseValue(out field, value);
+        set => SetBaseValue(ref field, value);
     }
 
     public CpRpgAttributePipeline? Pipeline { get; private set; }
@@ -28,6 +29,28 @@ public partial class CpRpgAttributeInstance : RefCounted {
     /// This attribute instance's **unclamped** final value.
     /// </summary>
     public double Value => GetValue();
+
+    /// <summary>
+    /// Apply attribute modifiers to a given base value.
+    /// </summary>
+    /// <param name="baseValue">the given base value</param>
+    /// <returns>the final value computed with the given base value and attribute modifiers inside this instance</returns>
+    public double ApplyModifiersTo(double baseValue) {
+        var value = baseValue;
+        foreach (var operation in ActualPipelineUsed.Operations) {
+            double merged;
+            if (MergedCache.TryGetValue(operation, out var mergedCache)) {
+                merged = mergedCache;
+            } else if (Modifiers.TryGetValue(operation, out var modifiers) && modifiers.Count > 0) {
+                merged = MergedCache[operation] = modifiers.Values.Aggregate(operation.UnitValue, (current, mod) => operation.Merge(current, mod.Amount));
+            } else {
+                continue;
+            }
+            value = operation.Apply(value, merged);
+        }
+        return value;
+    }
+
 
     private Dictionary<CpRpgAttributeModifierOperation, Dictionary<StringName, CpRpgAttributeModifier>> Modifiers { get; set; } = [];
     private Dictionary<CpRpgAttributeModifierOperation, double> MergedCache { get; set; } = [];
@@ -43,7 +66,7 @@ public partial class CpRpgAttributeInstance : RefCounted {
         if (dirty) {
             MarkDirty(operation);
         } else {
-            _finalValue = null;
+            _finalValue = double.NaN;
         }
         modifiers[modifier.Name] = modifier;
 
@@ -87,38 +110,28 @@ public partial class CpRpgAttributeInstance : RefCounted {
     #region Impl
 
     /// <summary>
-    /// Null if value is dirty.
+    /// NaN if value is dirty.
     /// </summary>
-    private double? _finalValue;
-
-    private void SetBaseValue(out double field, double value) {
-        field = value;
-        _finalValue = null;
-    }
+    private double _finalValue = double.NaN;
 
     private double GetValue() {
-        if (_finalValue is { } cached) {
-            return cached;
+        if (!double.IsNaN(_finalValue)) {
+            return _finalValue;
         }
-        var value = BaseValue;
-        foreach (var operation in ActualPipelineUsed.Operations) {
-            double merged;
-            if (MergedCache.TryGetValue(operation, out var mergedCache)) {
-                merged = mergedCache;
-            } else if (Modifiers.TryGetValue(operation, out var modifiers) && modifiers.Count > 0) {
-                merged = MergedCache[operation] = modifiers.Values.Aggregate(operation.UnitValue, (current, mod) => operation.Merge(current, mod.Amount));
-            } else {
-                continue;
-            }
-            value = operation.Apply(value, merged);
+        return _finalValue = ApplyModifiersTo(BaseValue);
+    }
+
+    private void SetBaseValue(ref double field, double value) {
+        if (Equals(field, value)) {
+            return;
         }
-        _finalValue = value;
-        return value;
+        field = value;
+        _finalValue = double.NaN;
     }
 
     private void MarkDirty(CpRpgAttributeModifierOperation operation) {
         MergedCache.Remove(operation);
-        _finalValue = null;
+        _finalValue = double.NaN;
     }
 
     #endregion

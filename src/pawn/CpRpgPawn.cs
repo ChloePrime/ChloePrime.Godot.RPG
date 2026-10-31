@@ -277,6 +277,12 @@ public static class PawnExt {
             return pawn.AttributeContainer.Data.TryGetValue(attribute, out var value) ? value : fallback;
         }
 
+        public double EvaluateAttributeWithBaseValue(CpRpgAttribute attribute, double baseValue) {
+            return pawn.AttributeContainer.Data.TryGetInstance(attribute, out var instance)
+                ? instance.ApplyModifiersTo(baseValue)
+                : baseValue;
+        }
+
         public double GetBattleResource(CpRpgBattleResourceType resourceType) {
             return pawn.ResourceContainer.TryGetValue(resourceType, out var value) ? value : 0;
         }
